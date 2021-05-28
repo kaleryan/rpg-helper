@@ -55,7 +55,7 @@ export class NpcModelFieldListEditorComponent implements OnInit {
     }
     this.filteredModelFields = this.unfilteredModelFields;
     if (this.filter !== '') {
-      this.filteredModelFields = this.filteredModelFields.filter(x => x.id.includes(this.filter))
+      this.filteredModelFields = this.filteredModelFields.filter(x => x.name.includes(this.filter))
     }
     if (this.selectedModelFieldId != null)
     {

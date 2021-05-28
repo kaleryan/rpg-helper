@@ -255,6 +255,9 @@ export class NpcWorldState {
                 modelField.modelSheet_Type = payload.modelField.modelSheet_Type;
             }
         }
+        if (payload.modelField.name !== undefined) {
+            modelField.name = payload.modelField.name;
+        }
         if (payload.modelField.desc !== undefined) {
             modelField.desc = payload.modelField.desc;
         }
