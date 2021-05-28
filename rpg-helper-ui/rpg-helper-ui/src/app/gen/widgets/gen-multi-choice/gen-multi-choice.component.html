@@ -1,0 +1,30 @@
+<form style="height: 35px; padding:0px; border-style:none"  class="rpg_toolbar_item">
+  <div fxLayout="row" fxLayout.xs="row" style="height: 35px; padding:0px; border-style:none">
+    <button class="rpg_action_button"
+      *ngFor="let choice of choices.selected"  (click)="remove(choice)">
+      {{choice}}
+    </button>
+
+    <button class="rpg_action_icon_button" *ngIf="isHidden"
+      (click)="switchVisibility()">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button class="rpg_action_icon_button" *ngIf="!isHidden"
+      (click)="switchVisibility()">
+      <mat-icon>remove</mat-icon>
+    </button>
+    <mat-form-field *ngIf="!isHidden" class="example-full-width">
+      <input #inputText type="text" matInput [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let choice of choices.unselected"
+          (click)="add(choice)">
+          {{choice}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button class="rpg_action_icon_button" *ngIf="!isHidden"
+      (click)="addNew()">
+      <mat-icon>check</mat-icon>
+    </button>
+  </div>
+</form>

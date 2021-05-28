@@ -1,0 +1,9 @@
+vlist_local_config.php
+*~
+\#*
+.#*
+vendors
+node_modules
+build
+.vs
+dist

@@ -1,0 +1,20 @@
+avant
+utile???
+
+<!-- <mat-form-field appearance="fill">
+  <mat-label>{{label}}</mat-label>
+  <mat-select (selectionChange)="onChangeChoice($event)" [value]="currentLabelledItemLabel">
+    <mat-option *ngFor="let labelledItem of availableLabelledItems" [value]="labelledItem.label">
+      {{labelledItem.label}}
+    </mat-option>
+  </mat-select>
+</mat-form-field> -->
+<mat-form-field appearance="fill">
+  <mat-label>{{label}}</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let labelledItem of availableLabelledItems" [value]="labelledItem.label">
+      {{labelledItem.label}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+apres

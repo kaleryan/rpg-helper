@@ -1,0 +1,18 @@
+<mat-toolbar class="rpg_toolbar">
+  <button mat-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
+  <mat-menu #menu="matMenu">
+    <!-- <button mat-menu-item (click)="clearWorld()">clear world</button> -->
+  </mat-menu>
+  RpgHelper
+  <mat-form-field class="rpg_text_field">
+    <input matInput mat-input value="{{worldName}}" disabled />
+  </mat-form-field>
+  <button class="rpg_action_button" (click)="saveWorld()">
+    Save
+  </button>
+  <mat-checkbox class="example-margin"
+                    [checked]="isAutoSave"
+                    (change)="onSwitchAutoSave()">
+                    Auto-Save
+  </mat-checkbox>
+</mat-toolbar>

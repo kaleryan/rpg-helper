@@ -1,0 +1,29 @@
+<div class="rpg_tabcontent">
+  <div fxLayout="row wrap" fxLayout.xs="row wrap">
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">{{name}}</label>
+    </div>
+    <button class="rpg_action_icon_button" (click)="addRealField()">
+      <mat-icon>add</mat-icon>
+    </button>
+    <mat-form-field class="rpg_text_field">
+      <mat-label>filter</mat-label>
+      <input matInput mat-input value="{{filter}}" (change)='setFilter($event)' placeholder='filter' />
+    </mat-form-field>
+    <button class="rpg_action_icon_button" (click)="reroll(false)">
+      <mat-icon>refresh</mat-icon>
+    </button>
+    <button class="rpg_action_icon_button" (click)="reroll(true)">
+      <mat-icon>toys</mat-icon>
+    </button>
+  </div>
+  <div class="rpg_listcontent" fxLayout="column" *ngFor="let labelledRealField of filteredInheritedRealFields">
+    <app-npc-real-field-editor [realField]="labelledRealField" [realSheet]="realSheet"></app-npc-real-field-editor>
+  </div>
+  <div class="rpg_listcontent" fxLayout="column" *ngFor="let labelledRealField of filteredCustomRealFields">
+    <app-npc-real-field-editor [realField]="labelledRealField" [realSheet]="realSheet"></app-npc-real-field-editor>
+  </div>
+  <div class="rpg_listcontent" fxLayout="column" *ngFor="let labelledRealField of filteredDecoratingRealFields">
+    <app-npc-real-field-editor [realField]="labelledRealField" [realSheet]="realSheet"></app-npc-real-field-editor>
+  </div>
+</div>

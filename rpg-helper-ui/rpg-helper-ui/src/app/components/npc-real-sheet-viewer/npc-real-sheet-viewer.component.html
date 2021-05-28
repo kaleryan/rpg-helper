@@ -1,0 +1,50 @@
+<div class="rpg_tabcontent" *ngIf="realSheet">
+  <div fxLayout="row wrap" fxLayout.xs="row wrap">
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">Real Sheet</label>
+    </div>
+    <mat-form-field class="rpg_text_field">
+      <mat-label>id</mat-label>
+      <input matInput mat-input value="{{realSheet.name}}" [disabled]="true" />
+    </mat-form-field>
+    <mat-form-field class="rpg_text_field">
+      <input matInput mat-input value="{{wr.getUi(realSheet.modelSheet).name}}" [disabled]="true" />
+    </mat-form-field>
+    <button class="rpg_action_icon_button" (click)="reroll(false)">
+      <mat-icon>refresh</mat-icon>
+    </button>
+    <button class="rpg_action_icon_button" (click)="reroll(true)">
+      <mat-icon>toys</mat-icon>
+    </button>
+  </div>
+  <div class="rpg_tabcontent">
+    <div fxLayout="row wrap" fxLayout.xs="row wrap">
+      <div class="rpg_pty_label">
+        <label class="rpg_pty_label_text">{{name}}</label>
+      </div>
+      <mat-form-field class="rpg_text_field">
+        <mat-label>filter</mat-label>
+        <input matInput mat-input value="{{filter}}" (change)='setFilter($event)' placeholder='filter' />
+      </mat-form-field>
+    </div>
+    <div class="rpg_listcontent" *ngFor="let byTag of filteredRealFieldsByTag">
+      <div class="rpg_pty_label">
+        <label class="rpg_pty_label_text">{{byTag.tag}}</label>
+      </div>
+      <div fxLayout="row wrap">
+        <div class="rpg_listcontent" *ngFor="let labelledRealField of byTag.modelInstFieldViews">
+          <div fxLayout="row">
+            <button class="rpg_action_button" matTooltip="{{labelledRealField.explanations}}">
+              {{labelledRealField.name}}
+            </button>
+            <ng-container *ngFor="let value of labelledRealField.values">
+              <button class="rpg_action_button" (click)="goToRealFieldValue(labelledRealField, value)" [disabled]="!hasRealSheetValue(labelledRealField)">
+                {{value}}
+              </button>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

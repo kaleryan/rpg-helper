@@ -1,0 +1,33 @@
+<div class="rpg_tabcontent">
+  <div fxLayout="row wrap" fxLayout.xs="row wrap">
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">Model Sheets</label>
+    </div>
+    <button class="rpg_action_icon_button" (click)="addModel()">
+      <mat-icon>add</mat-icon>
+    </button>
+    <mat-form-field class="rpg_text_field">
+      <input matInput mat-input value="{{filter}}" (change)='setFilter($event)' placeholder='filter' />
+    </mat-form-field>
+  </div>
+  <div fxLayout="row">
+    <div class="rpg_listcontent">
+      <div fxLayout="column" *ngFor="let model of filteredModels">
+        <div fxLayout="row">
+          <button class="rpg_action_icon_button" (click)="deleteModel(model)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button class="rpg_action_icon_button" (click)="selectModel(model)">
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+          <mat-form-field class="rpg_text_field">
+            <input matInput mat-input value="{{model.name}}" (change)='changeId(model, $event)' maxlength='100' />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="rpg_embeddingtab" *ngIf="selectedModel">
+      <app-npc-model-sheet-editor [modelId]="selectedModel.id"></app-npc-model-sheet-editor>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<h1 mat-dialog-title>{{realSheet.dialogLabel}}</h1>
+<div mat-dialog-content>
+  <div *ngFor="let field of realSheet.dialogFields">
+    <mat-form-field *ngIf="field.type === dialogFieldType.Text">
+      <mat-label>{{field.label}}</mat-label>
+      <input matInput [ngModel]="field.initialValues[0]" (change)="onChangeText(field, $event)" />
+    </mat-form-field>
+
+    <div *ngIf="field.type === dialogFieldType.Number" fxLayout="row">
+      <div class="rpg_pty_label"><label class="rpg_pty_label_text">{{field.label}}</label></div>
+      <mat-form-field>
+        <mat-label>{{field.label}}</mat-label>
+        <input matInput type="number" [ngModel]="field.initialValues[0]"
+          (change)="onChangeText(field, $event)" min="min" [max]="max"/>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="fill" *ngIf="field.type === dialogFieldType.Choice">
+      <mat-label>{{field.label}}</mat-label>
+      <mat-select (selectionChange)="onChangeChoice(field, $event)" [value]="field.initialValues[0]">
+        <mat-option *ngFor="let value of field.availableValues" [value]="value">
+          {{value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div appearance="fill" *ngIf="field.type === dialogFieldType.FreeChoice" fxLayout="row">
+      <mat-label>{{field.label}}</mat-label>
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Pick one value" aria-label="Number" matInput [matAutocomplete]="auto"
+          (change)="onChangeText(field, $event)">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+          (optionSelected)="onSelectAutoComplete(field, $event)">
+          <mat-option *ngFor="let value of field.availableValues" [value]="value">
+            {{value}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="field.type === dialogFieldType.Boolean" fxLayout="row">
+      <mat-checkbox class="example-margin"
+                    [checked]="field.initialValues[0] === 'true'"
+                    (change)="onChangeChecked(field, $event.checked)">
+                    {{field.label}}
+      </mat-checkbox>
+    </div>
+
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button cdkFocusInitial (click)="onOk()">Ok</button>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="rpg_tabcontent">
+  <div fxLayout="row wrap" fxLayout.xs="row wrap">
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">{{name}}</label>
+    </div>
+    <button class="rpg_action_icon_button" (click)="addRealSheet()">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button class="rpg_action_icon_button" (click)="switchListVisibility()">
+      <mat-icon>article</mat-icon>
+    </button>
+    <mat-form-field class="rpg_text_field">
+      <input matInput mat-input value="{{filter}}" (change)='setFilter($event)' placeholder='filter' />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>filtered model</mat-label>
+      <mat-select (selectionChange)="setModelFilter($event)" [value]="getfilterModelId()">
+        <mat-option [value]="undefined">none</mat-option>
+        <mat-option *ngFor="let model of getModelsForFilter()" [value]="model">
+          {{model.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row">
+    <div class="rpg_listcontent"  *ngIf="isListVisible">
+      <div fxLayout="column" *ngFor="let realSheet of filteredRealSheets">
+        <div fxLayout="row">
+          <button class="rpg_action_icon_button" (click)="deleteRealSheet(realSheet)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button class="rpg_action_icon_button" (click)="selectRealSheet(realSheet, false)">
+            <mat-icon>create</mat-icon>
+          </button>
+          <button class="rpg_action_icon_button" (click)="selectRealSheet(realSheet, true)">
+            <mat-icon>preview</mat-icon>
+          </button>
+          <mat-form-field class="rpg_text_field">
+            <input matInput mat-input value="{{realSheet.name}}" (change)='changeId(realSheet, $event)' maxlength='100' />
+          </mat-form-field>
+          <mat-form-field class="rpg_text_field">
+            <input matInput mat-input value="{{getModelSheet(realSheet).name}}" [disabled]="true" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div *ngIf="selectedRealSheet && !isPreview">
+        <app-npc-real-sheet-editor [realSheetId]="selectedRealSheet.id"></app-npc-real-sheet-editor>
+      </div>
+      <div *ngIf="selectedRealSheet && isPreview">
+        <app-npc-real-sheet-viewer [realSheetId]="selectedRealSheet.id"></app-npc-real-sheet-viewer>
+      </div>
+    </div>
+  </div>
+</div>

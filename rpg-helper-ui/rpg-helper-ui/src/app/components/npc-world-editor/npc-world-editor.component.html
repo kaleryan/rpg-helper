@@ -1,0 +1,40 @@
+<div class="rpg_tabcontent" fxLayout="column wrap" fxLayout.xs="column wrap">
+  <div fxLayout="column wrap" fxLayout.xs="column wrap">
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">Dependencies</label>
+    </div>
+    <div class="rpg_listcontent">
+      <div fxLayout="row wrap" fxLayout.xs="row wrap" *ngFor="let externalWorld of world.externalWorlds">
+        <div fxLayout="row">
+          <button class="rpg_action_icon_button" (click)="removeExternalWorld(externalWorld)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <mat-form-field class="rpg_text_field">
+            <input matInput mat-input value="{{externalWorld}}" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row wrap" fxLayout.xs="row wrap">
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">add dependencies</label>
+    </div>
+    <div fxLayout="row">
+      <button class="rpg_action_icon_button" (click)="refreshAvailableExternalWorlds()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <mat-form-field class="rpg_text_field" appearance="fill">
+        <mat-label>availableWorlds</mat-label>
+        <mat-select #selectAddedExternalWorld>
+          <mat-option *ngFor="let value of availableWorlds" [value]="value">
+            {{value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button class="rpg_action_button" (click)="addExternalWorld()">
+        Add
+      </button>
+    </div>
+  </div>
+</div>

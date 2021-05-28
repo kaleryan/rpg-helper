@@ -1,0 +1,88 @@
+<div class="rpg_tabcontent" *ngIf="modelField">
+  <div fxLayout="row wrap" fxLayout.xs="row wrap">
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">Model Field</label>
+    </div>
+    <mat-form-field class="rpg_text_field">
+      <mat-label>filter</mat-label>
+      <input matInput mat-input value="{{modelField.name}}" (change)='changeName($event)' maxlength='100' />
+    </mat-form-field>
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">Tag</label>
+    </div>
+    <mat-form-field class="rpg_text_field">
+      <mat-label>tag</mat-label>
+      <input matInput mat-input value="{{modelField.tag}}" (change)='changeTag($event)' />
+    </mat-form-field>
+  </div>
+  <div fxLayout="row">
+    <mat-form-field>
+      <mat-label>field type</mat-label>
+      <mat-select (selectionChange)="changeFieldType($event)" [value]="getFieldTypeString()">
+        <mat-option *ngFor="let fieldType of availableFieldTypes" [value]="fieldType">
+          {{fieldType}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+    <div *ngIf="modelField.fieldType === fieldTypeEnum.ModelSheets">
+    <mat-form-field>
+      <mat-label>ref modelSheet</mat-label>
+      <mat-select (selectionChange)="changeModelType($event)" [value]="getModelInit(modelField)">
+        <mat-option [value]="undefined">none</mat-option>
+        <mat-option *ngFor="let modelType of availableModelSheets" [value]="modelType.id">
+          {{modelType.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button class="rpg_action_icon_button" *ngIf="modelField.modelSheet_Type != null"
+      (click)="openModelSheet()"
+    >  
+      <mat-icon>open_in_new</mat-icon>
+    </button>
+  </div>
+  <div *ngIf="modelField.fieldType === fieldTypeEnum.NumbersInRange" fxLayout="row">
+    <div class="rpg_pty_label"><label class="rpg_pty_label_text">min</label></div>
+    <mat-form-field class="rpg_text_field" style="width:50px">
+      <mat-label>min</mat-label>
+      <input matInput mat-input value="{{modelField.minVal}}" (change)='changeMinVal($event)' type="number" min="1" max="100" />
+    </mat-form-field>
+    <div class="rpg_pty_label"><label class="rpg_pty_label_text">max</label></div>
+    <mat-form-field class="rpg_text_field" style="width:50px">
+      <mat-label>max</mat-label>
+      <input matInput mat-input value="{{modelField.maxVal}}" (change)='changeMaxVal($event)' type="number" min="1" max="100" />
+    </mat-form-field>
+    <div class="rpg_pty_label"><label class="rpg_pty_label_text">mean</label></div>
+    <mat-form-field class="rpg_text_field" style="width:50px">
+      <mat-label>mean</mat-label>
+      <input matInput mat-input value="{{modelField.meanVal}}" (change)='changeMeanVal($event)' type="number" min="1" max="100" />
+    </mat-form-field>
+    <div class="rpg_pty_label"><label class="rpg_pty_label_text">std</label></div>
+    <mat-form-field class="rpg_text_field" style="width:50px">
+      <mat-label>std</mat-label>
+      <input matInput mat-input value="{{modelField.stdVal}}" (change)='changeStdVal($event)' type="number" min="1" max="100" />
+    </mat-form-field>
+  </div>
+  <div *ngIf="modelField.fieldType === fieldTypeEnum.Labels" fxLayout="column">
+    <div class="rpg_listcontent" *ngIf="modelField.modelSheet_Type == null">
+      <label>possible values:</label>
+      <div *ngFor="let value of modelField.modelValues">
+        <div fxLayout="row">
+          <button class="rpg_action_icon_button" (click)="removeValue(value)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <mat-form-field class="rpg_text_field">
+            <input matInput mat-input value="{{value.label}}" disabled />
+          </mat-form-field>
+          <mat-form-field class="rpg_text_field">
+            <mat-label>weight</mat-label>
+            <input matInput mat-input value="{{value.weight}}" disabled />
+          </mat-form-field>
+        </div>
+      </div>
+      <button class="rpg_action_icon_button" (click)="addValue()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

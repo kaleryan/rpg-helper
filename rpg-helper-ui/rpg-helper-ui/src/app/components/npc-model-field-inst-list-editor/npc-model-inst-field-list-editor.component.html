@@ -1,0 +1,30 @@
+<div class="rpg_tabcontent">
+  <div fxLayout="row wrap" fxLayout.xs="row wrap">
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">Model Inst Fields</label>
+    </div>
+    <button class="rpg_action_icon_button" (click)="addModelField()">
+      <mat-icon>add</mat-icon>
+    </button>
+    <mat-form-field class="rpg_text_field">
+      <mat-label>filter</mat-label>
+      <input matInput mat-input value="{{filter}}" (change)='setFilter($event)' placeholder='filter' />
+    </mat-form-field>
+  </div>
+
+  <div class="rpg_listcontent" fxLayout="column" *ngFor="let labelledModelField of filteredModelFields">
+    <div fxLayout="row">
+      <button class="rpg_action_icon_button" (click)="removeModelField(labelledModelField)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button class="rpg_action_icon_button" (click)="selectLabel(labelledModelField)">
+        <mat-icon>open_in_new</mat-icon>
+      </button>
+      <mat-form-field class="rpg_text_field">
+        <input matInput mat-input value="{{labelledModelField.label}}"
+          (change)='changeLabel(labelledModelField, $event)' maxlength='100' />
+      </mat-form-field>
+      <app-npc-model-inst-field-editor [modelInstField]="labelledModelField.item"></app-npc-model-inst-field-editor>
+    </div>
+  </div>
+</div>

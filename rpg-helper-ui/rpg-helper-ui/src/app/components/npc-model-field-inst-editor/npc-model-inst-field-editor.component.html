@@ -1,0 +1,20 @@
+<div fxLayout="row">
+  <div class="rpg_pty_label"><label class="rpg_pty_label_text">maxCount</label></div>
+  <div class="rpg_text_field" style="width:50px">
+    <gen-input-number matInput mat-input value="{{modelInstField.maxCount}}" min="1" max="20" label="maxCount"
+      (change)='changeMaxCount($event)'></gen-input-number>
+  </div>
+  <div class="rpg_pty_label"><label class="rpg_pty_label_text">meanCount</label></div>
+  <div class="rpg_text_field" style="width:50px">
+    <gen-input-number matInput mat-input value="{{modelInstField.meanCount}}" min="1" max="20" label="meanCount"
+      (change)='changeMeanCount($event)'></gen-input-number>
+  </div>
+  <mat-checkbox class="example-margin"
+                [checked]="modelInstField.unicityInValues"
+                (change)="changeUnicity($event.checked)">
+                unicity
+  </mat-checkbox>
+  <mat-form-field class="rpg_text_field">
+    <input matInput mat-input value="{{wr.getUi(modelInstField.modelField).name}}" maxlength='100' disabled />
+  </mat-form-field>
+</div>

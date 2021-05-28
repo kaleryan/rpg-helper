@@ -1,0 +1,42 @@
+<div fxLayout="row wrap">
+  <button class="rpg_action_icon_button" (click)="removeRealField()"
+    [disabled]="realField.sourceRef != null">
+    <mat-icon>delete</mat-icon>
+  </button>
+  <button class="rpg_action_icon_button" *ngIf="" (click)="selectLabel()">
+    <mat-icon>open_in_new</mat-icon>
+  </button>
+  <mat-form-field class="rpg_text_field">
+    <input matInput mat-input value="{{realField.name}}" (change)='changeLabel($event)'/>
+  </mat-form-field>
+  <mat-icon *ngIf="realField.isDecorator">read_more</mat-icon>
+  <button class="rpg_action_icon_button" (click)="switchInstParamsVisibility()">
+    <mat-icon>build</mat-icon>
+  </button>
+  <mat-checkbox  *ngIf="instParamShown" class="example-margin"
+                    [checked]="realField.isDecorator"
+                    (change)="onChangeDecorator($event.checked)">
+                    Decorator
+  </mat-checkbox>
+  <mat-form-field class="rpg_text_field" *ngIf="instParamShown">
+    <input matInput mat-input value="{{modelField.name}}" maxlength='100' disabled />
+  </mat-form-field>
+  <app-npc-model-inst-field-editor *ngIf="instParamShown"
+    [modelInstField]="modelInstField" [realSheet]="realSheet" [realFieldId]="realField.id">
+  </app-npc-model-inst-field-editor>
+  <button class="rpg_action_icon_button" (click)="rerollRealField()">
+    <mat-icon>refresh</mat-icon>
+  </button>
+  <ng-container *ngFor="let value of getSelectedValues()">
+    <button class="rpg_action_button" (click)="removeRealFieldValue(value.item)">
+      <mat-icon>shuffle</mat-icon>
+    </button>
+    <button class="rpg_action_button" (click)="goToRealFieldValue(value.item)"
+      [disabled]="!hasRealSheetValue()">
+      {{value.label}}
+    </button>
+  </ng-container>
+  <button class="rpg_action_icon_button" (click)="addRealFieldValue()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

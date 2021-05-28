@@ -1,0 +1,15 @@
+<div class="rpg_tabcontent" *ngIf="realSheet">
+  <div fxLayout="row wrap" fxLayout.xs="row wrap">
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">Real Sheet</label>
+    </div>
+    <mat-form-field class="rpg_text_field">
+      <mat-label>id</mat-label>
+      <input matInput mat-input value="{{realSheet.name}}" (change)='changeId($event)' maxlength='100' />
+    </mat-form-field>
+    <mat-form-field class="rpg_text_field">
+      <input matInput mat-input value="{{modelSheet.name}}" [disabled]="true" />
+    </mat-form-field>
+  </div>
+  <app-npc-real-field-embeddedlist-editor [realSheetId]="realSheet.id"></app-npc-real-field-embeddedlist-editor>
+</div>

@@ -1,0 +1,35 @@
+<div *ngIf="model" class="rpg_tabcontent">
+  <div fxLayout="row wrap" fxLayout.xs="row wrap">
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">Model Sheet</label>
+    </div>
+    <mat-form-field class="rpg_text_field">
+      <mat-label>filter</mat-label>
+      <input matInput mat-input value="{{model.name}}" (change)='changeId($event)' maxlength='100' />
+    </mat-form-field>
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">Inherits from</label>
+    </div>
+    <mat-form-field>
+      <mat-label>model sheet</mat-label>
+      <mat-select (selectionChange)="changeModelParent($event)" [value]="getModelParentInit()">
+        <mat-option *ngFor="let modelParent of availableModelParents" [value]="modelParent.id">
+          {{modelParent.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- <gen-select-labelled
+      [currentLabelledItemLabel]="getCurrentModelParentLabel()"
+      [availableLabelledItems]="getModelParents()"
+      [label]="'model parent'"
+      (change)="changeModelParent($event)"
+    ></gen-select-labelled> -->
+  </div>
+  <div>
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">Contained sheets</label>
+    </div>
+    <app-npc-model-contained-sheet-list-editor [modelSheetId]="model.id"></app-npc-model-contained-sheet-list-editor>
+  </div>
+  <app-npc-model-inst-field-list-editor [modelId]="model.id"></app-npc-model-inst-field-list-editor>
+</div>

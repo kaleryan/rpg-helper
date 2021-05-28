@@ -1,0 +1,77 @@
+<div height="100%" fxLayout="column" fxLayout.xs="column">
+  <div fxLayout="column">
+    <button class="rpg_action_button" (click)="showHideNew()">
+      New
+    </button>
+    <div *ngIf="!isNewHidden" fxLayout="row">
+      <div class="rpg_pty_label">
+        <label class="rpg_pty_label_text">new world name</label>
+      </div>
+      <mat-form-field class="rpg_text_field">
+        <mat-label>world name</mat-label>
+        <input matInput #newName mat-input value="undefined" maxlength='100' />
+      </mat-form-field>
+      <button class="rpg_action_button" (click)="newWorld()">
+        Create
+      </button>
+    </div>
+    <button class="rpg_action_button" (click)="showHideClone()">
+      Save as
+    </button>
+    <div *ngIf="!isCloneHidden" fxLayout="row">
+      <div class="rpg_pty_label">
+        <label class="rpg_pty_label_text">new world name</label>
+      </div>
+      <mat-form-field class="rpg_text_field">
+        <mat-label>world name</mat-label>
+        <input matInput #cloneName mat-input value="{{world.name}}_clone" maxlength='100' />
+      </mat-form-field>
+      <button class="rpg_action_button" (click)="cloneWorld()">
+        Save
+      </button>
+    </div>
+    <!-- <button class="rpg_action_button" (click)="showHideRename()">
+      Rename
+    </button>
+    <div *ngIf="!isRenameHidden" fxLayout="row">
+      <div class="rpg_pty_label">
+        <label class="rpg_pty_label_text">new world name</label>
+      </div>
+      <mat-form-field class="rpg_text_field">
+        <mat-label>world name</mat-label>
+        <input matInput #newName mat-input value="{{world.name}}" maxlength='100' />
+      </mat-form-field>
+      <button class="rpg_action_button" (click)="changeName()">
+        ok
+      </button>
+    </div> -->
+    <button class="rpg_action_button" (click)="showHideImportFromStore()">
+      Load
+    </button>
+    <div *ngIf="!isImportFromStoreHidden" fxLayout="row">
+      <button class="rpg_action_icon_button" (click)="refreshList()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <mat-form-field class="rpg_text_field" appearance="fill">
+        <mat-label>availableWorlds</mat-label>
+        <mat-select #selectLoadElement>
+          <mat-option *ngFor="let value of availableWorlds" [value]="value">
+            {{value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button class="rpg_action_button" (click)="loadWorldFromStore()">
+        Load
+      </button>
+    </div>
+    <button class="rpg_action_button" (click)="showHideImportFromText()">
+      Export/Import via text
+    </button>
+    <div *ngIf="!isImportFromTextHidden" width="100%">
+      <textarea #jsonImportedText width="100%" height="100%">{{worldJson}}</textarea>
+      <button class="rpg_action_button" (click)="loadWorldFromText()">
+        Import
+      </button>
+    </div>
+  </div>
+</div>

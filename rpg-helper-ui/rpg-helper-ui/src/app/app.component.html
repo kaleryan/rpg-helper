@@ -1,0 +1,11 @@
+<div>
+<app-menu></app-menu>
+    <nav mat-tab-nav-bar class="rpg_tabs">
+      <a mat-tab-link class="rpg_tab_link" [routerLink]="'input-output'">File</a>
+      <a mat-tab-link class="rpg_tab_link" [routerLink]="'npc-world-editor'">Config</a>
+      <a mat-tab-link class="rpg_tab_link" [routerLink]="'npc-model-sheet-list-editor'">Model Sheets</a>
+      <a mat-tab-link class="rpg_tab_link" [routerLink]="'npc-model-field-list-editor'">Model Fields</a>
+      <a mat-tab-link class="rpg_tab_link" [routerLink]="'npc-real-sheet-list-editor'">Real Sheets</a>
+  </nav>
+<router-outlet></router-outlet>
+</div>

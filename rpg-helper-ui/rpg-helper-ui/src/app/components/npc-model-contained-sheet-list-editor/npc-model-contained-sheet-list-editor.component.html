@@ -1,0 +1,24 @@
+<div class="rpg_tabcontent">
+  <div fxLayout="row wrap" fxLayout.xs="row wrap">
+    <div class="rpg_pty_label">
+      <label class="rpg_pty_label_text">Contained model sheet</label>
+    </div>
+    <button class="rpg_action_icon_button" (click)="addModelSheet()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <div class="rpg_listcontent" fxLayout="column" *ngFor="let modelSheet of containedSheets">
+    <div fxLayout="row">
+      <button class="rpg_action_icon_button" (click)="removeModelSheet(modelSheet)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button class="rpg_action_icon_button" (click)="goToModelSheet(modelSheet)">
+        <mat-icon>open_in_new</mat-icon>
+      </button>
+      <mat-form-field class="rpg_text_field">
+        <input matInput mat-input value="{{modelSheet.name}}" readonly />
+      </mat-form-field>
+    </div>
+  </div>
+</div>
