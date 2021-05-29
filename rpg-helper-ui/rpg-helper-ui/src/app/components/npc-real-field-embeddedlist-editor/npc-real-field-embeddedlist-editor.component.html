@@ -10,11 +10,14 @@
       <mat-label>filter</mat-label>
       <input matInput mat-input value="{{filter}}" (change)='setFilter($event)' placeholder='filter' />
     </mat-form-field>
-    <button class="rpg_action_icon_button" (click)="reroll(false)">
+    <button class="rpg_action_icon_button" (click)="reroll(false)" matTooltip="full reroll">
       <mat-icon>refresh</mat-icon>
     </button>
-    <button class="rpg_action_icon_button" (click)="reroll(true)">
+    <button class="rpg_action_icon_button" (click)="reroll(true)" matTooltip="empty fields reroll">
       <mat-icon>toys</mat-icon>
+    </button>
+    <button class="rpg_action_button" (click)="syncRealSheetDependencies()" matTooltip="update with new fields from dependencies">
+      refresh depend
     </button>
   </div>
   <div class="rpg_listcontent" fxLayout="column" *ngFor="let labelledRealField of filteredInheritedRealFields">

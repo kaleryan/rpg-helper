@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
-import { NpcModelSheet } from '../../models/NpcModelSheet';
+import { NpcModelInstField, NpcModelSheet } from '../../models/NpcModelSheet';
 import { NpcRealSheet, NpcRealField } from '../../models/NpcRealSheet';
 import { NpcWorldState } from '../store/npc-world.state';
 import { UtilsRef } from '../../utils/UtilsRef';
 import { UpdateRealFieldValue, AddRealFieldValue, DeleteRealField, CreateCustomRealField, ChangeRealField } from '../store/npc-world.actions';
 import { Store } from '@ngxs/store';
+import { NpcWorldResolverService } from './npc-world-resolver.service';
+import { NpcModelEditorService } from './npc-model-editor.service';
+import { IStringDictionary } from '@app/utils/UtilsDictionary';
+import { UtilsLabelledItem } from '@app/utils/UtilsLabelledItem';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NpcRealSheetEditorService {
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private worldResolverService: NpcWorldResolverService,
+    private modelEditorService: NpcModelEditorService) {
   }
 
   public createNewNpc(npcModel: NpcModelSheet): NpcRealSheet {
@@ -20,25 +25,6 @@ export class NpcRealSheetEditorService {
     //   this.generate(fieldGroupGenerator));
     return npcRealSheet;
   }
-
-  // public addNpcField(npcRealSheet: NpcRealSheet, field: NpcModelField, newField: string, isChosen: boolean): NpcModelField {
-  //   const fieldGroup = this.generator.fieldGroups[fieldGroupRealSheet.id];
-  //   if (fieldGroup.fields.some(x => x.desc.toLowerCase() === newField.toLowerCase())) {
-  //     return null;
-  //   }
-  //   const newId = fieldGroup.fields.length;
-  //   fieldGroup.fields.push(new NpcFieldGenerator(newId, newField));
-  //   fieldGroupRealSheet.fields.push(new NpcField(newId, fieldGroupRealSheet.id));
-
-  //   if (isChosen && !fieldGroup.type.includes('number')
-  //       && !fieldGroup.type.includes('single')) {
-  //     fieldGroupRealSheet.chosenFieldIds.push(newId);
-  //   }
-
-  //   return fieldGroupRealSheet;
-  // }
-
-
   public computeSelectedValuesChanges(realSheet: NpcRealSheet, realField: NpcRealField, selectedValues: string[]): UpdatedRealFieldEffects {
 
       let realContainer = this.store.selectSnapshot(NpcWorldState.getWorld).realContainer;
@@ -101,6 +87,57 @@ export class NpcRealSheetEditorService {
       updatedFields.removedRealFields.forEach(realFieldId => this.store.dispatch(new DeleteRealField({realSheet: realSheet, id: realFieldId})));
       return updatedFields;
     }
+
+    
+
+  public computeDependentFieldsToAdd(realSheet: NpcRealSheet): NpcRealField[] {
+    // on itere sur les dependances
+    // pour chacune, on ajoute dans un dico les champs trouves
+    // a la fin, s'il en manque
+
+    var fieldsToAdd: NpcRealField[] = [];
+
+    var modelSheetRefs = new Set();
+    var realSheetRefs = new Set();
+    var existingFields = new Set();
+
+    Object.values(realSheet.realFields).forEach((realField: NpcRealField) => {
+        let fieldOwner = realField.sourceRef;
+        existingFields.add(realField.modelInstField.id);
+        if (fieldOwner.refType == NpcModelSheet.TYPE) {
+            modelSheetRefs.add(fieldOwner.id);
+        } else if (fieldOwner.refType == NpcRealSheet.TYPE) {
+            realSheetRefs.add(fieldOwner.id);
+        }
+    });
+
+    modelSheetRefs.forEach((modelSheetRefId: string) => {
+        let modelSheetRef = this.worldResolverService.get<NpcModelSheet>(new UtilsRef(modelSheetRefId, NpcModelSheet.TYPE));
+        
+        // on liste tous les champs possibles
+        fieldsToAdd = fieldsToAdd.concat(this.modelEditorService.getAllLabelledModelInstFields(modelSheetRef)
+            .filter(x => !existingFields.has(x.item.modelInstField.id)) // puis on enleve les champs présents
+            .map(x => {
+                existingFields.add(x.item.modelInstField.id)
+                return NpcRealField.createRefInst(x.label,
+                    new UtilsRef(x.item.modelInstField.id, NpcModelInstField.TYPE),
+                    new UtilsRef(modelSheetRefId, NpcModelSheet.TYPE), false)
+            }));   // et on rajoute les champs non-présents
+    })
+
+    realSheetRefs.forEach((realSheetRefId: string) => {
+        let realSheetRef = this.worldResolverService.get<NpcRealSheet>(new UtilsRef(realSheetRefId, NpcRealSheet.TYPE));
+        
+        fieldsToAdd = fieldsToAdd.concat(Object.entries(realSheetRef.realFields)
+            .filter(x => !existingFields.has(x[1].modelInstField.id)) // puis on enleve les champs présents
+            .map(x => {
+                existingFields.add(x[1].modelInstField.id)
+                return NpcRealField.createRefInst(x[0], new UtilsRef(x[1].modelInstField.id, NpcModelInstField.TYPE),
+                new UtilsRef(realSheetRefId, NpcRealSheet.TYPE), false)
+            }));   // et on rajoute les champs non-présents
+    })
+    return fieldsToAdd;
+ }
 }
 
 

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { CreateCustomRealField, UpdateRealFieldValue } from '@app/dal/store/npc-world.actions';
+import { CreateCustomRealField, SyncRealSheetDependencies, UpdateRealFieldValue } from '@app/dal/store/npc-world.actions';
 import { NpcWorldState } from '@app/dal/store/npc-world.state';
 import { NpcRealSheet, NpcRealContainer, NpcRealField } from '@app/models/NpcRealSheet';
 import { NpcModelField } from '@app/models/NpcModelField';
@@ -124,5 +124,9 @@ export class NpcRealFieldEmbeddedListEditorComponent implements OnInit {
 
   public reroll(isOverwriting: boolean) {
     this.npcGeneratorService.dispatchRerollSheet(this.realSheet, this.unfilteredRealFields, isOverwriting);
+  }
+
+  public syncRealSheetDependencies() {
+    this.store.dispatch(new SyncRealSheetDependencies({realSheet: this.realSheet}));
   }
 }

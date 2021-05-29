@@ -166,7 +166,7 @@ export class NpcWorldService {
   
   private removeExternal(key: string, value) {
     // Filtering out properties
-    if (value['isExternal'] === true
+    if ((value != null && value['isExternal'] === true)
         || key.startsWith("nosave_") === true) {
       return undefined;
     }

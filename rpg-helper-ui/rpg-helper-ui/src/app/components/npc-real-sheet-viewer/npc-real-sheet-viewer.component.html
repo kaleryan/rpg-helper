@@ -10,10 +10,10 @@
     <mat-form-field class="rpg_text_field">
       <input matInput mat-input value="{{wr.getUi(realSheet.modelSheet).name}}" [disabled]="true" />
     </mat-form-field>
-    <button class="rpg_action_icon_button" (click)="reroll(false)">
+    <button class="rpg_action_icon_button" (click)="reroll(false)" matTooltip="full reroll">
       <mat-icon>refresh</mat-icon>
     </button>
-    <button class="rpg_action_icon_button" (click)="reroll(true)">
+    <button class="rpg_action_icon_button" (click)="reroll(true)" matTooltip="empty fields reroll">
       <mat-icon>toys</mat-icon>
     </button>
   </div>

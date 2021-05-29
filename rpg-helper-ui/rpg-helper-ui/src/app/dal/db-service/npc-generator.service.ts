@@ -70,6 +70,8 @@ export class NpcGeneratorService {
     if (count <= 0) {
       count = 1;
     }
+
+    let maxCount = modelInstField.maxCount;
     if (count > modelInstField.maxCount) {
       count = modelInstField.maxCount;
     }
@@ -88,6 +90,11 @@ export class NpcGeneratorService {
       }
     } else {
       let possibleValues = proposedValues;
+
+      
+    if (modelInstField.unicityInValues && count > possibleValues.length) {
+      count = possibleValues.length
+    }
 
       // pour les Labels: on rapporte sur 1000 "cases" les differents weight
       //                  puis on calcule les seuils, on tire un nbre en 0 et 1000 et cherche le bon seuil par dichotomie
@@ -118,6 +125,10 @@ export class NpcGeneratorService {
         }
         if (i >= possibleValues.length) {
           i = possibleValues.length - 1;
+        }
+        if (modelInstField.unicityInValues && values.find(x => x === possibleValues[i].realValue) != null) {
+          --i;
+          continue;
         }
         values.push(possibleValues[i].realValue);
       }

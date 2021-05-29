@@ -127,6 +127,12 @@ export class CreateCustomRealField {
     constructor(public payload: {realSheet: NpcRealSheet, realField: NpcRealField}) {}
 }
 
+export class SyncRealSheetDependencies {
+    static readonly type = 'SyncRealSheetDependencies';
+    constructor(public payload: {realSheet: NpcRealSheet}) {}
+}
+
+
 export class AddRealField {
     static readonly type = 'AddRealField';
     constructor(public payload: {realSheet: NpcRealSheet, realField: NpcRealField}) {}

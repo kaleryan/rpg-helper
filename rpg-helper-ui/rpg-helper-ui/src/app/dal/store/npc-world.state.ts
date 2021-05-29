@@ -3,7 +3,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { CreateModel, ChangeModel, DeleteModel, DeleteModelField,
     ChangeModelField, RenameModelField, CreateModelField, 
     ChangeModelFieldLabel, RemoveModelField, StoreWorldInLocalStorage, LoadWorldFromLocalStorage,
-    ImportWorld, CreateRealSheet, RenameRealSheet, ChangeRealSheet, DeleteRealSheet, DeleteRealField, ChangeModelInstField, AddModelFieldToModel as AddModelInstFieldToModel, CreateCustomRealField, UpdateRealFieldValue, SaveWorld, LoadWorld, RenameWorld, ChangeRealField, AddRealFieldValue, NewWorld, CloneWorld, AddExternalWorld, RemoveExternalWorld } from './npc-world.actions';
+    ImportWorld, CreateRealSheet, RenameRealSheet, ChangeRealSheet, DeleteRealSheet, DeleteRealField, ChangeModelInstField, AddModelFieldToModel as AddModelInstFieldToModel, CreateCustomRealField, UpdateRealFieldValue, SaveWorld, LoadWorld, RenameWorld, ChangeRealField, AddRealFieldValue, NewWorld, CloneWorld, AddExternalWorld, RemoveExternalWorld, SyncRealSheetDependencies } from './npc-world.actions';
 import { NpcModelInstField, NpcModelSheet } from '../../models/NpcModelSheet';
 import { NpcWorld } from '../../models/NpcWorld';
 import { NpcWorldService } from '../db-service/npc-world.service';
@@ -13,6 +13,7 @@ import { produce } from 'immer';
 import { UtilsRef } from '../../utils/UtilsRef';
 import { NpcModelField } from '../../models/NpcModelField';
 import { IStringDictionary } from '@app/utils/UtilsDictionary';
+import { NpcRealSheetEditorService } from '../db-service/npc-real-sheet-editor.service';
 
 export interface NpcWorldStateModel {
     world: NpcWorld;
@@ -28,7 +29,8 @@ export interface NpcWorldStateModel {
 export class NpcWorldState {
 
     public constructor(private worldService: NpcWorldService,
-        private modelEditorService: NpcModelEditorService) {
+        private modelEditorService: NpcModelEditorService,
+        private realSheetEditorService: NpcRealSheetEditorService) {
     }
 
     @Selector()
@@ -448,6 +450,19 @@ export class NpcWorldState {
         
         ctx.setState(produce(state => {
             state.world.realContainer.realSheetsById[payload.realSheet.id].realFields[payload.realField.id] = payload.realField;
+        }));
+
+        return ctx.dispatch(new StoreWorldInLocalStorage("tag"));
+    }
+
+    @Action(SyncRealSheetDependencies)
+    syncRealSheetDependencies(ctx: StateContext<NpcWorldStateModel>, { payload }: SyncRealSheetDependencies) {
+
+        ctx.setState(produce(state => {
+            this.realSheetEditorService.computeDependentFieldsToAdd(payload.realSheet)
+                .forEach(fieldToAdd => {
+                    state.world.realContainer.realSheetsById[payload.realSheet.id].realFields[fieldToAdd.id] = fieldToAdd;
+                });
         }));
 
         return ctx.dispatch(new StoreWorldInLocalStorage("tag"));

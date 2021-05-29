@@ -3,6 +3,7 @@ import { NpcModelInstField, NpcModelSheet } from '../../models/NpcModelSheet';
 import { IStringDictionary } from '../../utils/UtilsDictionary';
 import { NpcWorldResolverService } from './npc-world-resolver.service';
 import { UtilsLabelledItem } from '../../utils/UtilsLabelledItem';
+import { NpcRealSheet } from '@app/models/NpcRealSheet';
 
 @Injectable({
   providedIn: 'root'
